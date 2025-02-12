@@ -20,7 +20,7 @@ function Topnav() {
     GetSearches();
   }, [query]);
   return (
-    <div className="w-full h-[10vh] relative flex justify-start items-center ml-[15%]">
+    <div className="w-[75%] h-[10vh] relative flex mx-auto items-center ">
       <i className="text-3xl text-zinc-400 ri-search-line"></i>
       <input
         onChange={(e) => setQuery(e.target.value)}
@@ -33,10 +33,10 @@ function Topnav() {
       {query.length > 0 && (
         <i
           onClick={() => setQuery("")}
-          className="text-zinc-400 text-3xl ri-close-fill"
+          className="right-0 text-zinc-400 text-3xl ri-close-fill"
         ></i>
       )}
-      <div className="absolute w-[50%] max-h-[50vh] bg-zinc-200 top-[90%] overflow-auto">
+      <div className="absolute w-[50%] max-h-[50vh] bg-zinc-200 top-[100%] left-[5%] overflow-auto">
         {searches.map((item, index) => (
           <Link
             key={index}
