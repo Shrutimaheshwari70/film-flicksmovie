@@ -1,17 +1,11 @@
-
-
 import React from "react";
 import { motion } from "framer-motion";
 
 function HorizontalCards({ data }) {
   return (
-    <div className="w-full p-5">
-      <div className="mb-5">
-        <h1 className="text-4xl font-bold text-white">🔥 Trending Now</h1>
-      </div>
-
+    <div className="w-full p-3">
       <motion.div
-        className="w-full flex gap-5 overflow-x-auto scrollbar-hide p-2"
+        className="w-full flex gap-5 overflow-x-auto scrollbar-hide p-2 "
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -19,15 +13,14 @@ function HorizontalCards({ data }) {
         {data.map((d, i) => (
           <motion.div
             key={i}
-            className="min-w-[18%] bg-zinc-900 rounded-lg overflow-hidden shadow-lg relative cursor-pointer"
+            className="min-w-[18%] bg-zinc-900 rounded-lg overflow-hidden shadow-lg relative cursor-pointer mb-2"
             whileHover={{ scale: 1.08, boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.3)" }}
             transition={{ duration: 0.3 }}
           >
             <img
               className="w-full h-52 object-cover"
-              src={`https://image.tmdb.org/t/p/original${
-                d.backdrop_path || d.poster_path
-              }`}
+              src={`https://image.tmdb.org/t/p/original${d.backdrop_path || d.poster_path
+                }`}
               alt=""
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
