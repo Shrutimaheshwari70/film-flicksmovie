@@ -19,7 +19,9 @@ background:#6556cd;
 
 }
 
-
+body{
+  background-color: #1F1E24 ;
+}
 
 /* Dropdown container */
 .dropdown-container {

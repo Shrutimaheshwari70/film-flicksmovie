@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 function HorizontalCards({ data }) {
   return (
@@ -11,11 +12,11 @@ function HorizontalCards({ data }) {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         {data.map((d, i) => (
-          <motion.div
+          <Link
+          to={`/${d.media_type}/details/${d.id}`}
             key={i}
             className="min-w-[18%] bg-zinc-900 rounded-lg overflow-hidden shadow-lg relative cursor-pointer mb-2"
-            whileHover={{ scale: 1.08, boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.3)" }}
-            transition={{ duration: 0.3 }}
+          
           >
             <img
               className="w-full h-52 object-cover"
@@ -36,7 +37,7 @@ function HorizontalCards({ data }) {
                 </span>
               </p>
             </div>
-          </motion.div>
+          </Link>
         ))}
       </motion.div>
     </div>
