@@ -53,6 +53,8 @@ function Trending() {
     refreshHandler()
     // GetTrending()
   }, [category, duration])
+
+
   return trending.length > 0 ? (
     <div className=' w-screen h-screen px-[5%] '>
       <div className='w-full flex items-center justify-between'>

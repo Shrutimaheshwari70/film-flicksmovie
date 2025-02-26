@@ -34,7 +34,7 @@ function Header({ data }) {
         className="w-[70%] mb-3 mt-3 text-white text-lg"
       >
         {data.overview.slice(0, 260)}...
-        <Link to="#" className="text-blue-400 hover:text-blue-300 transition duration-300">
+        <Link to={`/${data.media_type}/details/${data.id}`} className="text-blue-400 hover:text-blue-300 transition duration-300">
           more
         </Link>
       </motion.p>
