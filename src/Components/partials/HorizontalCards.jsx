@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import noimage from '/picture.png'
 
 function HorizontalCards({ data }) {
   return (
@@ -11,17 +12,17 @@ function HorizontalCards({ data }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        {data.length> 0 ? data.map((d, i) => (
+        {data.length > 0 ? data.map((d, i) => (
           <Link
-          to={`/${d.media_type}/details/${d.id}`}
+            to={`/${d.media_type}/details/${d.id}`}
             key={i}
             className="min-w-[15%] h-[35vh] bg-zinc-900 rounded-lg overflow-hidden shadow-lg relative cursor-pointer mb-2"
-          
+
           >
             <img
               className="w-full h-52 object-cover"
-              src={`https://image.tmdb.org/t/p/original${d.backdrop_path || d.poster_path
-                }`}
+              src={d.backdrop_path || d.poster_path ? `https://image.tmdb.org/t/p/original${d.backdrop_path || d.poster_path
+                }` : noimage}
               alt=""
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
@@ -38,7 +39,7 @@ function HorizontalCards({ data }) {
               </p>
             </div>
           </Link>
-        )):<h1 className="text-3xl text-white font-bold mt-5 ">Nothing to show</h1>}
+        )) : <h1 className="text-3xl text-white font-bold mt-5 ">Nothing to show</h1>}
       </motion.div>
     </div>
   );

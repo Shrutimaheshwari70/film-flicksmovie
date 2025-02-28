@@ -63,7 +63,7 @@ function Header({ data }) {
         transition={{ delay: 0.9, duration: 0.5 }}
       >
         <Link
-          to="#"
+          to={`/${data.media_type}/details/${data.id}/trailer`}
           className="bg-[#6556CD] p-4 rounded text-white mt-4 inline-block hover:bg-[#7c6ce6] transition duration-300"
         >
           Watch Trailer

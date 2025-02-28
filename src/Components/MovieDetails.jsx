@@ -124,9 +124,9 @@ function MovieDetails() {
             <h1>Available to Buy</h1>
             {info.watchproviders.buy.map((w, index) => (
               <img
+                key={index}
                 title={w.provider_name}
                 className="w-[6vh] h-[6vh]  object-cover rounded-md"
-                key={index}
                 src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
                 alt=""
               />
