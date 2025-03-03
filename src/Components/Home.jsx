@@ -12,7 +12,9 @@ function Home() {
   document.title = "MovieApp | Homepage";
   const [wallpaper, setwallpaper] = useState(null)
   const [trending, settrending] = useState(null)
+  const [people, setPeople] = useState([]);
   const [category, setcategory] = useState("all")
+
 
   const GetHeaderWallaper = async () => {
     try {
@@ -37,9 +39,18 @@ function Home() {
     }
   };
 
-
+  const GetPeople = async () => {
+    try {
+      const { data } = await axios.get(`/person/popular`);
+      setPeople(data.results);
+    } catch (err) {
+      console.error("Error fetching people:", err);
+    }
+  };
   useEffect(() => {
-    GetTrending()
+    GetTrending();
+  GetPeople();
+
     !wallpaper && GetHeaderWallaper()
   }, [category]);
 
@@ -57,11 +68,17 @@ function Home() {
           <br />
           <DropDown title="Filter" options={["tv", "movie", "all"]} func={(e) => setcategory(e.target.value)} />
         </div>
-        <HorizontalCards data={trending} title="movie"/>
+        <HorizontalCards data={trending} title="movie" />
+
+        <div className="flex justify-between p-4 pb-0 pt-8">
+          <h1 className="text-3xl font-bold text-white">🌟 Popular People</h1>
+        </div>
+        <HorizontalCards data={people} isPeople={true} />
+
       </div>
 
     </>
-  ) : <Loading/>
+  ) : <Loading />
 }
 
 export default Home

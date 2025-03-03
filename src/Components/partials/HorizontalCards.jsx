@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import noimage from '/picture.png'
 
-function HorizontalCards({ data }) {
+function HorizontalCards({ data, isPeople = false }) {
   return (
     <div className="w-full p-3">
       <motion.div
@@ -14,16 +14,15 @@ function HorizontalCards({ data }) {
       >
         {data.length > 0 ? data.map((d, i) => (
           <Link
-            to={`/${d.media_type}/details/${d.id}`}
+            to={isPeople ? `/people/details/${d.id}` : `/${d.media_type}/details/${d.id}`}
             key={i}
             className="min-w-[15%] h-[35vh] bg-zinc-900 rounded-lg overflow-hidden shadow-lg relative cursor-pointer mb-2"
 
           >
             <img
-              className="w-full h-52 object-cover"
-              src={d.backdrop_path || d.poster_path ? `https://image.tmdb.org/t/p/original${d.backdrop_path || d.poster_path
-                }` : noimage}
-              alt=""
+              className="w-full h-62 object-cover"
+              src={`https://image.tmdb.org/t/p/original${isPeople ? d.profile_path : (d.backdrop_path || d.poster_path)}`}
+              alt={d.name || d.title || "No Image"}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
 
@@ -31,12 +30,11 @@ function HorizontalCards({ data }) {
               <h1 className="text-lg font-semibold line-clamp-1 overflow-y-auto">
                 {d.title || d.name || d.original_name || d.original_title}
               </h1>
-              <p className="text-sm text-gray-400 line-clamp-2">
-                {d.overview.slice(0, 80)}...
-                <span className="text-blue-400 cursor-pointer hover:underline">
-                  more
-                </span>
-              </p>
+              {!isPeople && d.overview && (
+                <p className="text-sm text-gray-400 line-clamp-2">
+                  {d.overview.slice(0, 80)}...
+                  <span className="text-blue-400 cursor-pointer hover:underline"> more</span>
+                </p>)}
             </div>
           </Link>
         )) : <h1 className="text-3xl text-white font-bold mt-5 ">Nothing to show</h1>}
