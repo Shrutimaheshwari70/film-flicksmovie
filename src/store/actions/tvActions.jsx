@@ -1,3 +1,5 @@
+// src/store/actions/tvActions.jsx
+
 import { loadtv, removetv } from "../reducers/tvSlice.jsx";
 import axios from "../../utils/Axios";
 
@@ -26,3 +28,6 @@ export const asyncloadtv = (id) => async (dispatch) => {
     console.error("Error loading TV details:", err);
   }
 };
+
+// Export removetv explicitly so it can be imported from here
+export { removetv };
