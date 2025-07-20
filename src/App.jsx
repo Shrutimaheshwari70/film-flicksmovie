@@ -11,6 +11,8 @@ import TvDetails from './Components/TvDetails'
 import PersonDetails from './Components/PersonDetails'
 import Trailer from './Components/partials/Trailer'
 import NotFound from './Components/NotFound'
+import AboutUS from './Components/AboutUS'
+import Contact from './Components/Contact'
 function App() {
   return (
     <div className='bg-[#1F1E24] w-screen h-screen flex'>
@@ -30,6 +32,8 @@ function App() {
         <Route path='/people' element={<People />} />
         <Route path='/people/details/:id' element={<PersonDetails />} />
         <Route path='*' element={<NotFound />} />
+        <Route path='about'element={<AboutUS/>}/>
+        <Route path='contact'element={<Contact/>}/>
       </Routes>
 
     </div>

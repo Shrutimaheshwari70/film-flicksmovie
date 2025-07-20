@@ -13,66 +13,75 @@ function Popular() {
   const [popular, setpopular] = useState([]);
   const [page, setpage] = useState(1);
   const [hasMore, sethasMore] = useState(true);
-  document.title = "MovieApp | Popular " + category
-
-
+  document.title = "MovieApp | Popular " + category;
 
   const GetPopular = async () => {
     try {
-      const { data } = await axios.get(`/${category}/popular?page=${page}`)
+      const { data } = await axios.get(`/${category}/popular?page=${page}`);
 
-      // console.log(data);
       if (data.results.length > 0) {
         setpopular((prev) => [...prev, ...data.results]);
-        setpage((prev) => prev + 1)
+        setpage((prev) => prev + 1);
       } else {
-        sethasMore(false)
+        sethasMore(false);
       }
     } catch (err) {
       console.log("Error is ", err);
     }
   };
 
-
   const refreshHandler = () => {
     if (popular.length === 0) {
-      GetPopular()
+      GetPopular();
     } else {
       setpage(1);
       setpopular([]);
-      GetPopular()
+      sethasMore(true);
+      GetPopular();
     }
-  }
+  };
 
   useEffect(() => {
-    refreshHandler()
-    // Getpopular()
-  }, [category])
+    refreshHandler();
+  }, [category]);
 
   return popular.length > 0 ? (
-    <div className=' w-screen h-screen px-[5%] '>
-      <div className='w-full flex items-center justify-between'>
-        <h1 className='text-2xl font-semibold text-zinc-400 '>
-          <i onClick={() => navigate(-1)} className='hover:text-[#6556CD] ri-arrow-left-line  p-3 text-2xl'></i>{" "}
-          Popular</h1>
-        <div className='flex items-center w-[80%]'>
+    <div className="w-screen min-h-screen px-4 sm:px-6 md:px-[5%] py-6 bg-[#121212]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+        <h1 className="text-2xl font-semibold text-zinc-400 flex items-center">
+          <i
+            onClick={() => navigate(-1)}
+            className="hover:text-[#6556CD] ri-arrow-left-line p-3 text-2xl cursor-pointer"
+            title="Go Back"
+          ></i>
+          Popular
+          <span className="ml-2 text-sm text-zinc-500">{`(${category})`}</span>
+        </h1>
+
+        <div className="flex items-center w-full md:w-auto gap-4">
           <Topnav />
 
-          <DropDown title="Category" options={["movie", "tv"]} func={(e) => setcategory(e.target.value)} />
-          <div className='w-[2%]'></div>
-      
+          <DropDown
+            title="Category"
+            options={["movie", "tv"]}
+            func={(e) => setcategory(e.target.value)}
+          />
         </div>
       </div>
+
       <InfiniteScroll
         dataLength={popular.length}
         next={GetPopular}
         hasMore={hasMore}
-        loader={<h1>Loading...</h1>}>
+        loader={<h1 className="text-center text-white my-8">Loading...</h1>}
+        scrollThreshold={0.9}
+      >
         <Cards data={popular} title={category} />
       </InfiniteScroll>
-
     </div>
-  ) : <Loading />
+  ) : (
+    <Loading />
+  );
 }
 
-export default Popular
+export default Popular;

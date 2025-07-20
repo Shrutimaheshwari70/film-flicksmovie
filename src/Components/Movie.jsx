@@ -7,7 +7,6 @@ import DropDown from './partials/DropDown';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Cards from './partials/Cards';
 
-
 function Movie() {
   const navigate = useNavigate();
   const [category, setcategory] = useState("now_playing");
@@ -20,7 +19,6 @@ function Movie() {
     try {
       const { data } = await axios.get(`/movie/${category}?page=${page}`)
 
-      // console.log(data);
       if (data.results.length > 0) {
         setMovie((prev) => [...prev, ...data.results]);
         setpage((prev) => prev + 1)
@@ -31,7 +29,6 @@ function Movie() {
       console.log("Error is ", err);
     }
   };
-
 
   const refreshHandler = () => {
     if (Movie.length === 0) {
@@ -45,34 +42,48 @@ function Movie() {
 
   useEffect(() => {
     refreshHandler()
-    // GetMovie()
   }, [category])
 
   return Movie.length > 0 ? (
-    <div className=' w-screen h-screen px-[5%] '>
-      <div className='w-full flex items-center justify-between'>
-        <h1 className='text-2xl font-semibold text-zinc-400 '>
-          <i onClick={() => navigate(-1)} className='hover:text-[#6556CD] ri-arrow-left-line  p-3 text-2xl'></i>{" "}
-          Movies <small className='ml-1 text-sm text-zinc-500'>({category})</small></h1>
-        <div className='flex items-center w-[80%]'>
-          <Topnav />
+    <div className='w-screen min-h-screen px-4 sm:px-8 md:px-[5%] bg-black'>
+      <div className='w-full flex flex-wrap sm:flex-nowrap items-center justify-between py-4'>
+        <h1 className='flex items-center text-2xl font-semibold text-zinc-400 mb-3 sm:mb-0'>
+          <i
+            onClick={() => navigate(-1)}
+            className='hover:text-[#6556CD] ri-arrow-left-line p-3 text-2xl cursor-pointer'
+          ></i>
+          <span>
+            Movies <small className='ml-1 text-sm text-zinc-500 capitalize'>({category.replace('_', ' ')})</small>
+          </span>
+        </h1>
 
-          <DropDown title="Category" options={["popular", "top_rated", "upcoming", "now_playing"]} func={(e) => setcategory(e.target.value)} />
-          <div className='w-[2%]'></div>
+        <div className='flex flex-col sm:flex-row sm:items-center sm:w-[80%] gap-3'>
+          <div className='flex-grow'>
+            <Topnav />
+          </div>
 
+          <div className='w-full sm:w-auto'>
+            <DropDown
+              title="Category"
+              options={["popular", "top_rated", "upcoming", "now_playing"]}
+              func={(e) => setcategory(e.target.value)}
+            />
+          </div>
         </div>
       </div>
+
       <InfiniteScroll
         dataLength={Movie.length}
         next={GetMovie}
         hasMore={hasMore}
-        loader={<h1>Loading...</h1>}>
+        loader={<h1 className="text-white text-center my-8">Loading...</h1>}
+      >
         <Cards data={Movie} title="movie" />
       </InfiniteScroll>
-
     </div>
-  ) : <Loading />
+  ) : (
+    <Loading />
+  )
 }
 
-
-export default Movie
+export default Movie;

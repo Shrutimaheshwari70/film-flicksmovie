@@ -10,13 +10,13 @@ import {
 } from "react-router-dom";
 import Loading from "../Components/Loading";
 import HorizonatlCards from "./partials/HorizontalCards";
+
 function TvDetails() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
   const { info } = useSelector((state) => state.tv);
   const dispatch = useDispatch();
-  // console.log(info);
 
   useEffect(() => {
     dispatch(asyncloadtv(id));
@@ -24,6 +24,7 @@ function TvDetails() {
       dispatch(removetv());
     };
   }, [id]);
+
   return info ? (
     <div
       style={{
@@ -32,163 +33,149 @@ function TvDetails() {
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
       }}
-      // part1 navigation
-      className="relative w-screen h-[178vh] px-[10%]"
+      className="relative w-screen min-h-screen px-4 sm:px-8 md:px-[10%] py-8 bg-black bg-opacity-70"
     >
-      <nav className="h-[10vh] w-full items-center text-zinc-100 flex gap-10 text-2xl">
+      {/* Navigation */}
+      <nav className="h-[10vh] w-full flex items-center gap-6 text-zinc-100 text-2xl">
         <Link
           onClick={() => navigate(-1)}
-          className="hover:text-[#6556CD] ri-arrow-left-line"
+          className="hover:text-[#6556CD] ri-arrow-left-line cursor-pointer"
+          title="Go Back"
         ></Link>
-        <a target="_blank" href={info.detail.homepage}>
+        <a target="_blank" rel="noreferrer" href={info.detail.homepage} className="hover:text-[#6556CD]">
           <i className="ri-external-link-fill"></i>
         </a>
         <a
           target="_blank"
+          rel="noreferrer"
           href={`https://www.wikidata.org/wiki/${info.externalid.wikidata_id}`}
+          className="hover:text-[#6556CD]"
         >
           <i className="ri-earth-fill"></i>
         </a>
         <a
           target="_blank"
+          rel="noreferrer"
           href={`https://www.imdb.com/title/${info.externalid.imdb_id}/`}
+          className="hover:text-[#6556CD]"
         >
           imdb
         </a>
       </nav>
 
-      {/* part 2 poster and our details page */}
-      <div className="w-full flex ">
+      {/* Poster and Details */}
+      <div className="flex flex-col md:flex-row mt-6 gap-6">
         <img
-          className="shadow-[8px_17px_38px_2px_rgba(0,0,0,.5)] h-[50vh] object-cover rounded-xl"
-          src={`https://image.tmdb.org/t/p/original/${info.detail.poster_path || info.detail.backdrop_path
-            }`}
-          alt=""
+          className="shadow-lg h-[50vh] w-full md:w-auto object-cover rounded-xl flex-shrink-0"
+          src={`https://image.tmdb.org/t/p/original/${info.detail.poster_path || info.detail.backdrop_path}`}
+          alt={info.detail.name || info.detail.title}
         />
-        <div className="content ml-[5%]">
-          <h1 className="text-5xl font-black text-white">
-            {" "}
+        <div className="flex-1 text-white ml-0 md:ml-8">
+          <h1 className="text-4xl md:text-5xl font-black">
             {info.detail.original_title ||
               info.detail.title ||
               info.detail.name ||
               info.detail.original_name}
-            <small className="text-2xl font-bold text-zinc-400 ml-1">
-              ({info.detail.first_air_date.split("-")[0]})
+            <small className="text-2xl font-bold text-zinc-400 ml-2">
+              ({info.detail.first_air_date?.split("-")[0] || "N/A"})
             </small>
           </h1>
 
-          <div className="flex text-zinc-200 items-center gap-x-5 font-semibold mt-3 mb-5">
-            <span className="border-2 text-white w-[5vh] h-[5vh] flex justify-center items-center font-semibold rounded-full bg-[#ee9e3d]">
-              {info.detail.vote_average.toFixed(1)}
+          <div className="flex flex-wrap text-zinc-200 items-center gap-4 font-semibold mt-3 mb-5">
+            <span className="border-2 text-white w-[5vh] h-[5vh] flex justify-center items-center rounded-full bg-[#ee9e3d] font-semibold">
+              {info.detail.vote_average?.toFixed(1) || "N/A"}
             </span>
-            <h1 className="font-semibold text-2xl w-[60px] leading-6">
-              User Score
-            </h1>
-            <h1>{info.detail.first_air_date}</h1>
-            <h1>{info.detail.genres.map((g) => g.name).join(",")}</h1>
-
-            <h1>{info.detail.runtime}min</h1>
+            <h2 className="text-2xl leading-6 min-w-[120px]">User Score</h2>
+            <h3>{info.detail.first_air_date || "Release Date N/A"}</h3>
+            <h3>{info.detail.genres?.map((g) => g.name).join(", ") || "Genres N/A"}</h3>
+            <h3>{info.detail.episode_run_time ? `${info.detail.episode_run_time[0]} min` : "Runtime N/A"}</h3>
           </div>
 
-          <h1 className="text-xl font-semibold italic text-zinc-200">
-            {info.detail.tagline}
-          </h1>
+          <p className="text-xl font-semibold italic text-zinc-200">{info.detail.tagline || ""}</p>
 
-          <h1 className="text-2xl mt-5 mb-1 text-white">Overview</h1>
+          <h2 className="text-2xl mt-5 mb-1">Overview</h2>
           <p className="text-white">{info.detail.overview}</p>
 
-          <h1 className="text-2xl mt-5 mb-1 text-white">tv Translated</h1>
-          <p className="mb-10 text-white w-[100%]">
-            {info.translations.join(", ")}
-          </p>
+          <h2 className="text-2xl mt-5 mb-1">TV Translated</h2>
+          <p className="mb-10 text-white w-full">{info.translations?.join(", ")}</p>
 
           <Link
             to={`${pathname}/trailer`}
-            className=" mt-10 p-5 rounded-md bg-[#6556CD] text-white font-semibold "
+            className="inline-block mt-10 px-6 py-3 rounded-md bg-[#6556CD] text-white font-semibold hover:bg-[#5648b5] transition"
           >
-            <i className="ri-play-line text-xl mr-3"></i>Play Trailer{" "}
+            <i className="ri-play-line text-xl mr-3"></i> Play Trailer
           </Link>
         </div>
       </div>
 
-      {/* part 3 avaiable platforms */}
-
-      <div className="w-[80%] flex flex-col gap-y-5 mt-10 ">
-        {info.watchproviders && info.watchproviders.flatrate && (
-          <div className="flex gap-x-10 items-center text-white mb-3">
-            <h1>Available on platform</h1>
+      {/* Available Platforms */}
+      <div className="w-full md:w-[80%] flex flex-col gap-y-5 mt-10 text-white">
+        {info.watchproviders?.flatrate && (
+          <div className="flex gap-x-8 items-center flex-wrap">
+            <h3 className="min-w-[140px] font-semibold">Available on platform</h3>
             {info.watchproviders.flatrate.map((w, index) => (
               <img
                 key={index}
                 title={w.provider_name}
-                className="w-[6vh] h-[6vh]  object-cover rounded-md"
+                className="w-[6vh] h-[6vh] object-cover rounded-md"
                 src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt=""
+                alt={w.provider_name}
               />
             ))}
           </div>
         )}
 
-        {info.watchproviders && info.watchproviders.buy && (
-          <div className="flex gap-x-10 items-center text-white">
-            <h1>Available to Buy</h1>
+        {info.watchproviders?.buy && (
+          <div className="flex gap-x-8 items-center flex-wrap">
+            <h3 className="min-w-[140px] font-semibold">Available to Buy</h3>
             {info.watchproviders.buy.map((w, index) => (
               <img
-                title={w.provider_name}
-                className="w-[6vh] h-[6vh]  object-cover rounded-md"
                 key={index}
+                title={w.provider_name}
+                className="w-[6vh] h-[6vh] object-cover rounded-md"
                 src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt=""
+                alt={w.provider_name}
               />
             ))}
           </div>
         )}
-        {info.watchproviders && info.watchproviders.rent && (
-          <div className="flex gap-x-10 items-center text-white">
-            <h1>Available on Rent</h1>
+
+        {info.watchproviders?.rent && (
+          <div className="flex gap-x-8 items-center flex-wrap">
+            <h3 className="min-w-[140px] font-semibold">Available on Rent</h3>
             {info.watchproviders.rent.map((w, index) => (
               <img
-                title={w.provider_name}
-                className="w-[6vh] h-[6vh]  object-cover rounded-md"
                 key={index}
+                title={w.provider_name}
+                className="w-[6vh] h-[6vh] object-cover rounded-md"
                 src={`https://image.tmdb.org/t/p/original/${w.logo_path}`}
-                alt=""
+                alt={w.provider_name}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* part 4 seasons */}
-
-      {/* part 4 seasons */}
-      {info.detail.seasons && info.detail.seasons.length > 0 && (
+      {/* Seasons */}
+      {info.detail.seasons?.length > 0 && (
         <>
-          <hr className="mt-10 mb-5 border-none h-[2px] bg-zinc-500 " />
-          <h1 className="mt-10 ml-5 text-3xl font-semibold text-white ">
-            Seasons
-          </h1>
+          <hr className="mt-10 mb-5 border-none h-[2px] bg-zinc-500" />
+          <h2 className="mt-10 ml-2 text-3xl font-semibold text-white">Seasons</h2>
           <HorizonatlCards
-            data={info.detail.seasons.filter(season => season.poster_path && season.name)}
+            data={info.detail.seasons.filter((season) => season.poster_path && season.name)}
           />
         </>
       )}
 
-
-
-
-
-
-      {/* part-5 recommendations & similar */}
-      <hr className="mt-10 mb-5 border-none h-[2px] bg-zinc-500 " />
-      <h1 className="mt-10 ml-5 text-3xl font-semibold text-white ">
-        Recommendations & Similar Stuff{" "}
-      </h1>
+      {/* Recommendations & Similar */}
+      <hr className="mt-10 mb-5 border-none h-[2px] bg-zinc-500" />
+      <h2 className="mt-10 ml-2 text-3xl font-semibold text-white">
+        Recommendations & Similar Stuff
+      </h2>
       <HorizonatlCards
-        data={
-          info.recommendations.length > 0 ? info.recommendations : info.similar
-        }
+        data={info.recommendations.length > 0 ? info.recommendations : info.similar}
       />
+
       <Outlet />
     </div>
   ) : (
