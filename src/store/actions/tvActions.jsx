@@ -1,7 +1,7 @@
-import { loadtv, removetv } from "../reducers/tvSlice";
+import { loadtv, removetv } from "../reducers/tvSlice.jsx";
 import axios from "../../utils/Axios";
 
-export const asyncloadtv = (id) => async (dispatch, getState) => {
+export const asyncloadtv = (id) => async (dispatch) => {
   try {
     const detail = await axios.get(`/tv/${id}`);
     const externalid = await axios.get(`/tv/${id}/external_ids`);
@@ -11,7 +11,7 @@ export const asyncloadtv = (id) => async (dispatch, getState) => {
     const videos = await axios.get(`/tv/${id}/videos`);
     const watchproviders = await axios.get(`/tv/${id}/watch/providers`);
 
-    let theultimatedetails = {
+    const theultimatedetails = {
       detail: detail.data,
       externalid: externalid.data,
       recommendations: recommendations.data.results,
@@ -23,6 +23,6 @@ export const asyncloadtv = (id) => async (dispatch, getState) => {
 
     dispatch(loadtv(theultimatedetails));
   } catch (err) {
-    console.log("Error", err);
+    console.error("Error loading TV details:", err);
   }
 };
